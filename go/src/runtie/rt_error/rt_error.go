@@ -1,5 +1,5 @@
 package rt_error
-import "fmt"
+
 type ErrorType int
 
 const (
@@ -7,13 +7,32 @@ const (
 	FILERROR
 	SQLERROR
 	DEVICEERROR
+	PARAMERROR
 )
 
 type Customerror struct {
-	code ErrorType
-	err error
+	Code ErrorType
+	Info string
 }
 
-func (err Customerror)Info() string {
-	info := fmt.Sprintf("%s", )
+func (err Customerror) Error() string {
+	info := err.Info
+	switch err.Code {
+	case DEVICEERROR:
+		info += ", device error"
+
+	case FILERROR:
+		info += ", file error"
+
+	case HTTPERROR:
+		info += ", http error"
+
+	case SQLERROR:
+		info += ", sql error"
+
+	case PARAMERROR:
+		info += ", param error"
+	}
+
+	return info
 }
